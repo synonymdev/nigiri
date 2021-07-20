@@ -2,7 +2,7 @@ version: '3'
 services:
   # RPC daemon
   bitcoin:
-    image: ghcr.io/vulpemventures/bitcoin:latest
+    image: synonymsoft/docker-omnicore
     container_name: bitcoin
     command:
       - -datadir=config

@@ -20,7 +20,7 @@ const (
 var (
 	AvaliableNetworks   = []string{"regtest"}
 	NigiriBitcoinImages = []string{
-		"ghcr.io/vulpemventures/bitcoin:latest",
+		"synonymsoft/docker-omnicore:latest",
 		"ghcr.io/vulpemventures/electrs:latest",
 		"ghcr.io/vulpemventures/esplora:latest",
 		"ghcr.io/vulpemventures/nigiri-chopsticks:latest",

@@ -1,5 +1,23 @@
 version: '3.7'
 services:
+  lnd:
+    image: synonymsoft/docker-lnd
+    container_name: lnd
+    command:
+      - --bitcoind.rpchost
+      - bitcoin:18443
+      - --bitcoind.zmqpubrawblock
+      - tcp://bitcoin:28332
+      - --bitcoind.zmqpubrawtx
+      - tcp://bitcoin:28333
+    ports:
+      - 9735:9735
+      - 10009:10009
+      - 8080:8080
+    volumes:
+      - ./volumes/lnd/:/root/.lnd/
+    depends_on:
+      - bitcoin
   # RPC daemon
   bitcoin:
     image: synonymsoft/docker-omnicore
@@ -7,8 +25,10 @@ services:
     command:
       - -datadir=config
     ports:
-      - 18443:18433
+      - 18443:18443
       - 18444:18444
+      - 28332:28332
+      - 28333:28333
     volumes:
       - ./volumes/bitcoin/:/config
     restart: unless-stopped
@@ -48,7 +68,7 @@ services:
       - --cors
       - "*"
     depends_on:
-      - bitcoin
+      - lnd
     ports:
       - 50000:50000
       - 30000:30000

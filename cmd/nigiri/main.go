@@ -38,6 +38,7 @@ var datadirFlag = cli.StringFlag{
 //go:embed resources/docker-compose.yml
 //go:embed resources/bitcoin.conf
 //go:embed resources/elements.conf
+//go:embed resources/lnd.conf
 var f embed.FS
 
 func main() {
@@ -99,11 +100,14 @@ func provisionResourcesToDatadir(datadir string) error {
 		return nil
 	}
 
-	// create folders in volumes/{bitcoin,elements} for node datadirs
+	// create folders in volumes/{bitcoin,lnd,elements} for node datadirs
 	if err := makeDirectoryIfNotExists(filepath.Join(datadir, "volumes", "bitcoin")); err != nil {
 		return err
 	}
 	if err := makeDirectoryIfNotExists(filepath.Join(datadir, "volumes", "elements")); err != nil {
+		return err
+	}
+	if err := makeDirectoryIfNotExists(filepath.Join(datadir, "volumes", "lnd")); err != nil {
 		return err
 	}
 
@@ -125,6 +129,13 @@ func provisionResourcesToDatadir(datadir string) error {
 	if err := copyFromResourcesToDatadir(
 		filepath.Join("resources", "elements.conf"),
 		filepath.Join(datadir, "volumes", "elements", "elements.conf"),
+	); err != nil {
+		return err
+	}
+
+	if err := copyFromResourcesToDatadir(
+		filepath.Join("resources", "lnd.conf"),
+		filepath.Join(datadir, "volumes", "lnd", "lnd.conf"),
 	); err != nil {
 		return err
 	}
